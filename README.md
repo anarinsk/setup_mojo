@@ -52,20 +52,24 @@ modular install mojo
 - 그런데 기본 파이썬을 세팅하기가 싫다! 
 
 ##### Conda 환경 
-
 https://github.com/modularml/mojo/issues/1085#issuecomment-1771403719
 
 - 여기서 바꿀 것은 `$CONDA_PREFIX/lib` 대목이다. 
-    - 예를 들어 콘다를 brew에 설치했다면 brew 아래 콘다가 깔여 있을 것이다. 
+    - 예를 들어 콘다를 macos 실리콘 버전의 brew에 설치했다면 brew 아래 콘다가 깔여 있을 것이다. 따라서 찾아야 하는 기본 디렉토리는 `/opt/homebrew/Caskroom/` 아래 miniconda가 설치된다. 
 
 ```bash
 > export MOJO_PYTHON_LIBRARY="$(find /opt/homebrew/Caskroom/miniconda/base/lib -iname 'libpython*.[s,d]*' | sort -r | head -n 1)"
 > echo "export MOJO_PYTHON_LIBRARY=$MOJO_PYTHON_LIBRARY" >> ~/.zshrc
 ```
 
-- `.zshrc`에 들어 있는지 확인해보자. 
-- 위 방식은 파이썬 호출 모듈의 주소를 변수로 저장하고 이를 `MOJO_PYTHON_LIBRARY`로 저장한다. 
-- macos에서 pixi를 이용해 다음과 같이 주소를 설정했다. `~/.zshrc` 마지막 줄은 다음과 같다. 
+- `.zshrc`에 마지막 줄에 해당 내용이 잘 들어 있는지 확인해보자. 
+
+##### pixi 환경 
+- mojo는 `MOJO_PYTHON_LIBRARY`에 있는 파이썬 모듈을 호출한다. 
+- 필요한 pixi 환경을 해당 주소로 설정하면 된다. 
+- 일례로 macos에서 pixi를 이용해 다음과 같이 주소를 설정했다. 
+    - pixi 환경은 `~/mojopython` 아래 깔려 있다. 절대 경로는 `/Users/anari/mojopython`이다. 
+    - `~/.zshrc` 마지막 줄은 다음과 같다. 
 
 ```zshrc
 export MOJO_PYTHON_LIBRARY=/Users/anari/mojopython/.pixi/env//lib/libpython3.11.dylib
