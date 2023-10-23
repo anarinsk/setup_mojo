@@ -43,13 +43,11 @@ modular install mojo
 이거 골치 아프다. 구별해서 살펴보자. 
 
 #### Github Codespaces 
-
 - 이거 자체가 컨테이너이기 때문에 그냥 쓰면 된다. 기본 파이썬 환경에 어느 정도 기본 패키지가 설치된 것으로 보인다. 
 
 #### Locally
-
-- 기본 파이썬을 세팅한다. 
-- 그런데 기본 파이썬을 세팅하기가 싫다! 
+- 기본 파이썬 환경을 따른다. 
+- 그런데 기본 파이썬 대신 특화된 환경을 쓰고 싶다면?
 
 ##### Conda 환경 
 https://github.com/modularml/mojo/issues/1085#issuecomment-1771403719
@@ -64,13 +62,19 @@ https://github.com/modularml/mojo/issues/1085#issuecomment-1771403719
 
 - `.zshrc`에 마지막 줄에 해당 내용이 잘 들어 있는지 확인해보자. 
 
+##### 핵심은 `dylib` 혹은 `so` 파일의 위치 
+
+- 위의 내용을 기계적으로 따라할 필요는 없다. 핵심은 `MOJO_PYTHON_LIBRARY`에 파이썬 라이브러리가 있는 경로를 넣는 것이다.
+- 직접 찾아도 되겠다. 파이썬이 설치된 경로 아래 `lib`를 찾아서 그 폴더 안에 ` libpython3.11.so` 혹은 `libpython3.11.dylib` 파일이 있는지 확인한다. 해당 파일이 있는 위치의 절대 경로를 파악해서 이 녀석을 직접 `.zshrc`에 심어주면 된다. 
+
 ##### pixi 환경 
-- mojo는 `MOJO_PYTHON_LIBRARY`에 있는 파이썬 모듈을 호출한다. 
-- 필요한 pixi 환경을 해당 주소로 설정하면 된다. 
+- 사용하고 싶은 pixi 환경을 `MOJO_PYTHON_LIBRARY`에 넣어주면 그만이다. 
 - 일례로 macos에서 pixi를 이용해 다음과 같이 주소를 설정했다. 
-    - pixi 환경은 `~/mojopython` 아래 깔려 있다. 절대 경로는 `/Users/anari/mojopython`이다. 
+    - pixi 환경은 `~/mojo_python` 아래 깔려 있다. 절대 경로는 `/Users/anari/mojo_python`이다. 
     - `~/.zshrc` 마지막 줄은 다음과 같다. 
 
 ```zshrc
-export MOJO_PYTHON_LIBRARY=/Users/anari/mojopython/.pixi/env//lib/libpython3.11.dylib
+echo "export MOJO_PYTHON_LIBRARY=/Users/anari/mojopython/.pixi/env/lib/libpython3.11.dylib" > ~/.zshrc # for macos 
+
+echo "export MOJO_PYTHON_LIBRARY=/home/anari/mojo_python/.pixi/env/lib/libpython3.11.so" >> ~/.zshrc # for linux
 ```
