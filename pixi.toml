@@ -1,0 +1,14 @@
+[project]
+name = "setup_mojo"
+version = "0.1.0"
+description = "Add a short description here"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tasks]
+
+[dependencies]
+matplotlib = "3.8.1.*"
+python = "3.11.*"
+jupyter = "1.0.0.*"
+numpy = "1.26.0.*"
